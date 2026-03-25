@@ -58,6 +58,6 @@ def test_split_dataset_is_deterministic():
     first_train, first_val, first_test = split_dataset(df)
     second_train, second_val, second_test = split_dataset(df)
 
-    assert first_train.index.tolist() == second_train.index.tolist()
-    assert first_val.index.tolist() == second_val.index.tolist()
-    assert first_test.index.tolist() == second_test.index.tolist()
+    assert first_train["nameOrig"].tolist() == second_train["nameOrig"].tolist()
+    assert first_val["nameOrig"].tolist() == second_val["nameOrig"].tolist()
+    assert first_test["nameOrig"].tolist() == second_test["nameOrig"].tolist()
