@@ -1,60 +1,90 @@
-# PaySim Fraud Detection: Rule-Based Baselines vs Machine Learning
+# PaySim Fraud Detection
 
-Reproducible fraud-detection case study comparing high-signal business rules against lightweight supervised machine learning baselines on the PaySim synthetic financial dataset.
+Rule-based baselines vs lightweight machine learning on the PaySim synthetic transaction dataset.
 
-## Why This Repo Exists
+> A portfolio-ready fraud-detection case study focused on reproducibility, interpretability, and honest evaluation on an imbalanced classification task.
 
-This project is a fallback portfolio piece for Data Scientist / ML Engineer applications.
+## Highlights
 
-The repo is intentionally scoped to show four things clearly:
+- Rebuilt a notebook-first repo into a code-first ML project with reusable modules under `src/`
+- Preserved a strong domain baseline: balance-emptying fraud rules for `TRANSFER` and `CASH_OUT`
+- Compared rule heuristics against Logistic Regression and Random Forest
+- Added deterministic data splits, automated tests, exported metrics, and figure artifacts
 
-- business understanding of a fraud-detection problem
-- reproducible code-first ML workflow
-- honest evaluation on an imbalanced classification task
-- ability to turn notebook exploration into reusable project code
+## Project Snapshot
 
-## Problem Statement
+| Area | What This Repo Shows |
+| --- | --- |
+| Problem framing | Fraud detection on highly imbalanced financial-transaction data |
+| Baselines | Interpretable rule-based heuristics |
+| ML models | Logistic Regression, Random Forest |
+| Evaluation | Precision, Recall, F1, PR-AUC, confusion matrix |
+| Engineering | Tested pipeline, reproducible local runs, modular code |
 
-The PaySim dataset simulates mobile-money transactions and includes a small minority of fraudulent events. The challenge is not simply to build a classifier, but to compare:
+## Pipeline
 
-- simple, explainable domain rules
-- lightweight supervised models
-- the trade-off between precision, recall, and operational usefulness
+```mermaid
+flowchart LR
+    A["PaySim CSV"] --> B["Schema Validation"]
+    B --> C["Deterministic Split"]
+    C --> D["Rule Baseline"]
+    C --> E["Feature Engineering"]
+    E --> F["Logistic Regression"]
+    E --> G["Random Forest"]
+    D --> H["Metrics + Confusion Matrix"]
+    F --> H
+    G --> H
+    H --> I["README / Portfolio Artifacts"]
+```
 
 ## Dataset
 
 - Source: [PaySim on Kaggle](https://www.kaggle.com/datasets/ealaxi/paysim1)
 - Expected local path: `data/raw/PS_20174392719_1491204439457_log.csv`
-- License and usage terms for the dataset follow Kaggle / dataset-owner rules
+- The full dataset is not committed to this repository
 
-This repository does not commit the full dataset. You download it locally, place it under `data/raw/`, and run the pipeline yourself.
+## Rule Baseline
 
-## Project Approach
+The strongest interpretable baseline in this project flags transactions where:
 
-The repo follows a hybrid strategy:
+- `type == TRANSFER` and `amount == oldbalanceOrg`
+- `type == CASH_OUT` and `amount == oldbalanceOrg`
 
-1. Start with rule discovery from transaction behavior.
-2. Turn the strongest fraud heuristics into a formal rule baseline.
-3. Build reusable feature engineering on top of those domain signals.
-4. Compare the rule baseline against simple supervised models.
+This rule comes from the original exploratory notebook and is now formalized in [baseline_rules.py](src/rules/baseline_rules.py).
 
-Current supervised baselines:
+## Latest Local Reference Run
 
-- Logistic Regression with class weighting
-- Random Forest with class weighting
+Reference run completed on `2026-03-25` using a stratified sample of `200,000` rows from the public PaySim CSV.
 
-## Rule Baseline Insight
+| Method | Precision | Recall | F1 | PR-AUC |
+| --- | ---: | ---: | ---: | ---: |
+| Rule baseline | 1.000 | 0.981 | 0.990 | 0.981 |
+| Logistic Regression | 1.000 | 1.000 | 1.000 | 1.000 |
+| Random Forest | 1.000 | 1.000 | 1.000 | 1.000 |
 
-The original exploratory analysis in the legacy notebook found a strong fraud pattern:
+Reference artifacts:
 
-- `TRANSFER` where `amount == oldbalanceOrg`
-- `CASH_OUT` where `amount == oldbalanceOrg`
+- Metrics: [model_comparison.json](reports/metrics/paysim_200k/model_comparison.json)
+- Figures:
+  - [rule_baseline_confusion_matrix.png](reports/figures/rule_baseline_confusion_matrix.png)
+  - [logistic_regression_confusion_matrix.png](reports/figures/logistic_regression_confusion_matrix.png)
+  - [random_forest_confusion_matrix.png](reports/figures/random_forest_confusion_matrix.png)
 
-In the original notebook-based analysis, those simple rules captured roughly `97.6%` of known fraud cases in the PaySim data while remaining fully interpretable.
+Preview:
 
-This refactored repo turns that insight into tested code under `src/rules/baseline_rules.py` so it can be compared against machine-learning baselines instead of living only inside a notebook.
+![Rule baseline confusion matrix](reports/figures/rule_baseline_confusion_matrix.png)
 
-## What The Repo Contains
+## Why The Scores Are So High
+
+PaySim is a synthetic dataset with strong balance-driven fraud structure. That makes it useful for learning and benchmarking, but it also means very high scores should be interpreted cautiously.
+
+This repo tries to stay honest about that:
+
+- the rule baseline is reported alongside ML models
+- metrics focus on imbalance-aware evaluation instead of raw accuracy
+- the README explicitly calls out dataset limitations
+
+## Repository Layout
 
 ```text
 .
@@ -64,10 +94,12 @@ This refactored repo turns that insight into tested code under `src/rules/baseli
 |-- data/
 |   |-- raw/
 |   `-- processed/
+|-- docs/
+|   `-- resume-highlights.md
 |-- notebooks/
-|   |-- 01_eda.ipynb
-|   |-- 02_rule_baseline.ipynb
-|   |-- 03_model_experiments.ipynb
+|   |-- 01_dataset_overview.ipynb
+|   |-- 02_rule_based_baseline.ipynb
+|   |-- 03_model_comparison.ipynb
 |   `-- legacy/
 |-- reports/
 |   |-- figures/
@@ -82,19 +114,9 @@ This refactored repo turns that insight into tested code under `src/rules/baseli
 `-- tests/
 ```
 
-## Core Workflow
-
-1. `src/data/load_data.py` loads and validates the PaySim schema.
-2. `src/data/split.py` creates deterministic train / validation / test splits.
-3. `src/rules/baseline_rules.py` computes the interpretable fraud heuristic.
-4. `src/features/build_features.py` builds model-ready features.
-5. `src/models/train.py` trains the ML baselines and exports comparable metrics.
-6. `src/models/evaluate.py` reports fraud-appropriate metrics:
-   `precision`, `recall`, `F1`, and `PR-AUC`
-
 ## Quick Start
 
-Create and activate a virtual environment:
+Create a virtual environment and install dependencies:
 
 ```powershell
 python -m venv .venv
@@ -102,90 +124,51 @@ python -m venv .venv
 python -m pip install -r requirements.txt
 ```
 
-Download the Kaggle dataset and place the CSV at:
+Download the Kaggle CSV and place it at:
 
 ```text
 data/raw/PS_20174392719_1491204439457_log.csv
 ```
 
-Run the automated tests:
+Run tests:
 
 ```powershell
 .\.venv\Scripts\python.exe -m pytest tests -q
 ```
 
-Run the training pipeline:
+Run a full local experiment:
 
 ```powershell
 .\.venv\Scripts\python.exe -m src.models.train --input data/raw/PS_20174392719_1491204439457_log.csv
 ```
 
-Optional quick local smoke run:
+Run a faster sample experiment:
 
 ```powershell
 .\.venv\Scripts\python.exe -m src.models.train --input data/raw/PS_20174392719_1491204439457_log.csv --sample-size 50000 --output-dir reports/metrics/smoke
 ```
 
-## Outputs
-
-After training, the repo writes:
-
-- JSON metrics under `reports/metrics/`
-- confusion-matrix figures under `reports/figures/`
-
-The exported metrics compare:
-
-- rule baseline
-- logistic regression
-- random forest
-
-## Latest Local Reference Run
-
-Local reference run completed on `2026-03-25` using the public PaySim CSV with a stratified sample of `200,000` rows out of `6,362,620` total rows.
-
-Test-split summary:
-
-| Method | Precision | Recall | F1 | PR-AUC |
-| --- | ---: | ---: | ---: | ---: |
-| Rule baseline | 1.000 | 0.981 | 0.990 | 0.981 |
-| Logistic Regression | 1.000 | 1.000 | 1.000 | 1.000 |
-| Random Forest | 1.000 | 1.000 | 1.000 | 1.000 |
-
-Reference artifacts:
-
-- metrics JSON: `reports/metrics/paysim_200k/model_comparison.json`
-- confusion matrices:
-  - `reports/figures/rule_baseline_confusion_matrix.png`
-  - `reports/figures/logistic_regression_confusion_matrix.png`
-  - `reports/figures/random_forest_confusion_matrix.png`
-
-Interpretation:
-
-- the rule baseline remains very strong and misses only one positive case in the sampled test split
-- the supervised models reach perfect scores on this sampled run
-- those perfect scores should be interpreted cautiously because PaySim is a synthetic dataset with strong balance-driven structure
-
 ## Notebooks
 
 The notebooks are supporting material, not the source of truth:
 
-- `notebooks/01_eda.ipynb`: quick data overview
-- `notebooks/02_rule_baseline.ipynb`: interpretable fraud rules
-- `notebooks/03_model_experiments.ipynb`: code-first experiment walkthrough
-- `notebooks/legacy/01_original_rule_discovery.ipynb`: original notebook retained for history
+- [01_dataset_overview.ipynb](notebooks/01_dataset_overview.ipynb): quick dataset overview
+- [02_rule_based_baseline.ipynb](notebooks/02_rule_based_baseline.ipynb): interpretable fraud heuristics
+- [03_model_comparison.ipynb](notebooks/03_model_comparison.ipynb): code-first experiment walkthrough
+- [legacy/01_original_rule_discovery.ipynb](notebooks/legacy/01_original_rule_discovery.ipynb): original analysis notebook kept for history
 
 ## Testing
 
-The test suite focuses on engineering discipline rather than high coverage:
+The test suite covers:
 
 - schema validation
 - deterministic splitting
 - rule-baseline correctness
 - feature construction
 - metric computation
-- training smoke test
+- training smoke runs
 
-Run all tests:
+Run:
 
 ```powershell
 .\.venv\Scripts\python.exe -m pytest tests -q
@@ -194,17 +177,11 @@ Run all tests:
 ## Limitations
 
 - This is not a production fraud platform.
-- The current repo keeps the model family intentionally small.
+- The model family is intentionally small.
 - Final benchmark values depend on the exact local dataset run and sample size.
-- PaySim is synthetic, so very strong performance may reflect dataset structure rather than real-world deployment difficulty.
-- Rule baselines can be strong on this dataset but may not generalize to real financial systems without deeper validation.
-- Balance-related fields are highly informative in this dataset, so any production-grade extension should include leakage review and robustness checks.
+- PaySim is synthetic, so strong performance may not transfer directly to real-world financial systems.
+- Balance-related fields are highly informative in this dataset, so leakage review and robustness checks matter in any real extension.
 
-## Why This Is Still Useful In A Portfolio
+## Resume Notes
 
-This project is not trying to win on model complexity. Its value is that it shows:
-
-- you can derive useful signals from domain behavior
-- you can formalize those signals into tested code
-- you can compare interpretable baselines against ML baselines honestly
-- you can structure a small ML project like software, not just like a notebook dump
+Short CV bullets are available in [resume-highlights.md](docs/resume-highlights.md).
