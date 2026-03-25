@@ -15,7 +15,8 @@ from src.config import RANDOM_STATE, TARGET_COLUMN
 from src.data.load_data import load_paysim_csv
 from src.data.split import split_dataset
 from src.features.build_features import build_feature_matrix
-from src.models.evaluate import compute_classification_metrics
+from src.models.evaluate import compute_classification_metrics, select_best_threshold
+from src.models.inspection import extract_feature_importances
 from src.models.predict import predict_with_threshold
 from src.rules.baseline_rules import apply_rule_baseline
 from src.utils.io import write_json
@@ -117,16 +118,28 @@ def train_and_evaluate(
         },
         "models": {},
     }
+    threshold_artifacts: dict[str, object] = {}
+    feature_importance_artifacts: dict[str, object] = {}
 
     for model_name, model in MODELS.items():
         model.fit(train_features, train_target)
-        validation_predictions, validation_scores = predict_with_threshold(
+        validation_scores = model.predict_proba(validation_features)[:, 1]
+        threshold_selection = select_best_threshold(validation_target, validation_scores)
+        selected_threshold = float(threshold_selection["best_threshold"])
+        validation_predictions, _ = predict_with_threshold(
             model,
             validation_features,
+            threshold=selected_threshold,
         )
-        test_predictions, test_scores = predict_with_threshold(model, test_features)
+        test_predictions, test_scores = predict_with_threshold(
+            model,
+            test_features,
+            threshold=selected_threshold,
+        )
+        feature_importances = extract_feature_importances(model, train_features.columns.tolist())
 
         results["models"][model_name] = {
+            "selected_threshold": threshold_selection,
             "validation": compute_classification_metrics(
                 validation_target,
                 validation_predictions,
@@ -137,11 +150,16 @@ def train_and_evaluate(
                 test_predictions,
                 test_scores,
             ),
+            "feature_importances": feature_importances,
         }
+        threshold_artifacts[model_name] = threshold_selection
+        feature_importance_artifacts[model_name] = feature_importances
 
     output_root = Path(output_dir)
     output_root.mkdir(parents=True, exist_ok=True)
     write_json(results, output_root / "model_comparison.json")
+    write_json(threshold_artifacts, output_root / "threshold_selection.json")
+    write_json(feature_importance_artifacts, output_root / "feature_importances.json")
 
     figures_root = _resolve_figures_dir(output_root)
     save_confusion_matrix_heatmap(

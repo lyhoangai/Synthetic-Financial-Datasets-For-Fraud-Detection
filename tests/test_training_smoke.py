@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 import pandas as pd
@@ -41,5 +42,13 @@ def test_train_and_evaluate_writes_metrics_and_figures(tmp_path: Path):
     results = train_and_evaluate(csv_path, output_dir=output_dir)
 
     assert (output_dir / "model_comparison.json").exists()
+    assert (output_dir / "threshold_selection.json").exists()
+    assert (output_dir / "feature_importances.json").exists()
     assert (tmp_path / "reports" / "figures" / "rule_baseline_confusion_matrix.png").exists()
+    saved_thresholds = json.loads((output_dir / "threshold_selection.json").read_text(encoding="utf-8"))
+    saved_importances = json.loads((output_dir / "feature_importances.json").read_text(encoding="utf-8"))
+    assert "selected_threshold" in results["models"]["logistic_regression"]
+    assert "feature_importances" in results["models"]["random_forest"]
+    assert "logistic_regression" in saved_thresholds
+    assert saved_importances["random_forest"][0]["importance"] >= 0.0
     assert "models" in results

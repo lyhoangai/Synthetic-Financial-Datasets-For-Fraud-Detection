@@ -9,5 +9,12 @@ data/processed/*
 !data/processed/.gitkeep
 reports/figures/*
 !reports/figures/.gitkeep
+!reports/figures/rule_baseline_confusion_matrix.png
+!reports/figures/logistic_regression_confusion_matrix.png
+!reports/figures/random_forest_confusion_matrix.png
 reports/metrics/*
 !reports/metrics/.gitkeep
+!reports/metrics/smoke/
+!reports/metrics/smoke/model_comparison.json
+!reports/metrics/smoke/threshold_selection.json
+!reports/metrics/smoke/feature_importances.json

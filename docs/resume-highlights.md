@@ -2,9 +2,9 @@
 
 ## English
 
-- Built a code-first fraud-detection case study on the PaySim dataset, refactoring exploratory notebook work into reusable Python modules for data validation, feature engineering, model training, and evaluation.
-- Implemented interpretable rule-based fraud baselines and compared them against Logistic Regression and Random Forest on an imbalanced transaction dataset using precision, recall, F1, and PR-AUC.
-- Designed a reproducible local experiment workflow with automated tests, deterministic train/validation/test splits, exported metrics, and confusion-matrix artifacts for portfolio-ready reporting.
+- Started from a Colab-style PaySim fraud notebook and cleaned it up into a small Python project with reusable modules for data validation, feature engineering, model training, and evaluation.
+- Implemented an interpretable rule-based fraud baseline and compared it with Logistic Regression and Random Forest on an imbalanced transaction dataset using precision, recall, F1, and PR-AUC.
+- Set up reproducible local experiments with deterministic train/validation/test splits, validation-based threshold tuning, automated smoke tests, exported metrics, and confusion-matrix artifacts.
 
 ## Vietnamese
 

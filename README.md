@@ -1,24 +1,25 @@
-# PaySim Fraud Detection
+# PaySim Fraud Detection Case Study
 
-Rule-based baselines vs lightweight machine learning on the PaySim synthetic transaction dataset.
+Rule-based baselines and lightweight machine learning on the PaySim synthetic transaction dataset.
 
-> A portfolio-ready fraud-detection case study focused on reproducibility, interpretability, and honest evaluation on an imbalanced classification task.
+> Started as a Colab/notebook exploration on the PaySim dataset, then cleaned up into a small Python project for reproducible experiments, interpretable baselines, and honest evaluation on an imbalanced classification task.
 
 ## Highlights
 
-- Rebuilt a notebook-first repo into a code-first ML project with reusable modules under `src/`
-- Preserved a strong domain baseline: balance-emptying fraud rules for `TRANSFER` and `CASH_OUT`
-- Compared rule heuristics against Logistic Regression and Random Forest
-- Added deterministic data splits, automated tests, exported metrics, and figure artifacts
+- Started from Colab/notebook exploration to inspect fraud patterns in the PaySim dataset
+- Refactored the core workflow into a lightweight Python project with reusable modules under `src/`
+- Kept an interpretable domain baseline based on balance-emptying fraud patterns for `TRANSFER` and `CASH_OUT`
+- Compared simple rule heuristics against Logistic Regression and Random Forest
+- Added deterministic data splits, validation-based threshold tuning, automated tests, and exported report artifacts
 
 ## Project Snapshot
 
-| Area | What This Repo Shows |
+| Area | What This Repo Covers |
 | --- | --- |
 | Problem framing | Fraud detection on highly imbalanced financial-transaction data |
 | Baselines | Interpretable rule-based heuristics |
 | ML models | Logistic Regression, Random Forest |
-| Evaluation | Precision, Recall, F1, PR-AUC, confusion matrix |
+| Evaluation | Precision, Recall, F1, PR-AUC, confusion matrix, threshold selection |
 | Engineering | Tested pipeline, reproducible local runs, modular code |
 
 ## Pipeline
@@ -34,7 +35,7 @@ flowchart LR
     D --> H["Metrics + Confusion Matrix"]
     F --> H
     G --> H
-    H --> I["README / Portfolio Artifacts"]
+    H --> I["README / Report Artifacts"]
 ```
 
 ## Dataset
@@ -52,19 +53,21 @@ The strongest interpretable baseline in this project flags transactions where:
 
 This rule comes from the original exploratory notebook and is now formalized in [baseline_rules.py](src/rules/baseline_rules.py).
 
-## Latest Local Reference Run
+## Checked-In Smoke Run
 
-Reference run completed on `2026-03-25` using a stratified sample of `200,000` rows from the public PaySim CSV.
+This repository includes a small smoke run generated from [`data/raw/smoke_sample.csv`](data/raw/smoke_sample.csv) so the exported metrics and artifacts are visible without requiring the full Kaggle dataset.
 
 | Method | Precision | Recall | F1 | PR-AUC |
 | --- | ---: | ---: | ---: | ---: |
-| Rule baseline | 1.000 | 0.981 | 0.990 | 0.981 |
+| Rule baseline | 1.000 | 1.000 | 1.000 | 1.000 |
 | Logistic Regression | 1.000 | 1.000 | 1.000 | 1.000 |
 | Random Forest | 1.000 | 1.000 | 1.000 | 1.000 |
 
-Reference artifacts:
+Smoke artifacts:
 
-- Metrics: [model_comparison.json](reports/metrics/paysim_200k/model_comparison.json)
+- Metrics: [model_comparison.json](reports/metrics/smoke/model_comparison.json)
+- Thresholds: [threshold_selection.json](reports/metrics/smoke/threshold_selection.json)
+- Feature importances: [feature_importances.json](reports/metrics/smoke/feature_importances.json)
 - Figures:
   - [rule_baseline_confusion_matrix.png](reports/figures/rule_baseline_confusion_matrix.png)
   - [logistic_regression_confusion_matrix.png](reports/figures/logistic_regression_confusion_matrix.png)
@@ -80,6 +83,7 @@ PaySim is a synthetic dataset with strong balance-driven fraud structure. That m
 
 This repo tries to stay honest about that:
 
+- the checked-in artifact uses a tiny smoke sample and is meant only as a reproducibility/demo reference
 - the rule baseline is reported alongside ML models
 - metrics focus on imbalance-aware evaluation instead of raw accuracy
 - the README explicitly calls out dataset limitations
@@ -150,7 +154,7 @@ Run a faster sample experiment:
 
 ## Notebooks
 
-The notebooks are supporting material, not the source of truth:
+The notebooks show the original exploration path, while the Python modules under `src/` are the cleaned-up workflow for repeatable local runs:
 
 - [01_dataset_overview.ipynb](notebooks/01_dataset_overview.ipynb): quick dataset overview
 - [02_rule_based_baseline.ipynb](notebooks/02_rule_based_baseline.ipynb): interpretable fraud heuristics

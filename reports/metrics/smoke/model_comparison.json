@@ -1,0 +1,442 @@
+{
+  "dataset": {
+    "input_path": "data/raw/smoke_sample.csv",
+    "rows_loaded": 60,
+    "rows_used": 60,
+    "sample_size": null
+  },
+  "rule_baseline": {
+    "validation": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "pr_auc": 1.0,
+      "support_positive": 2,
+      "support_negative": 10,
+      "confusion_matrix": [
+        [
+          10,
+          0
+        ],
+        [
+          0,
+          2
+        ]
+      ]
+    },
+    "test": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "pr_auc": 1.0,
+      "support_positive": 2,
+      "support_negative": 10,
+      "confusion_matrix": [
+        [
+          10,
+          0
+        ],
+        [
+          0,
+          2
+        ]
+      ]
+    }
+  },
+  "models": {
+    "logistic_regression": {
+      "selected_threshold": {
+        "best_threshold": 0.1,
+        "best_metric": "f1",
+        "best_value": 1.0,
+        "candidates": [
+          {
+            "threshold": 0.1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.15,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.2,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.25,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.3,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.35,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.4,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.45,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.5,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.55,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.6,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.65,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.7,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.75,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.8,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.85,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.9,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        ]
+      },
+      "validation": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "pr_auc": 1.0,
+        "support_positive": 2,
+        "support_negative": 10,
+        "confusion_matrix": [
+          [
+            10,
+            0
+          ],
+          [
+            0,
+            2
+          ]
+        ]
+      },
+      "test": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "pr_auc": 1.0,
+        "support_positive": 2,
+        "support_negative": 10,
+        "confusion_matrix": [
+          [
+            10,
+            0
+          ],
+          [
+            0,
+            2
+          ]
+        ]
+      },
+      "feature_importances": [
+        {
+          "feature": "newbalanceOrig",
+          "importance": 0.6090691260051091
+        },
+        {
+          "feature": "amount",
+          "importance": 0.6026147079378122
+        },
+        {
+          "feature": "origin_balance_delta",
+          "importance": 0.6026147079378122
+        },
+        {
+          "feature": "destination_balance_delta",
+          "importance": 0.6026147079378122
+        },
+        {
+          "feature": "newbalanceDest",
+          "importance": 0.5902628608251619
+        },
+        {
+          "feature": "is_full_balance_transfer",
+          "importance": 0.4056255960745774
+        },
+        {
+          "feature": "is_full_balance_cash_out",
+          "importance": 0.40009712325391317
+        },
+        {
+          "feature": "oldbalanceOrg",
+          "importance": 0.07462812050161464
+        },
+        {
+          "feature": "oldbalanceDest",
+          "importance": 0.07462812050161464
+        },
+        {
+          "feature": "step",
+          "importance": 0.07462812050161463
+        },
+        {
+          "feature": "type_CASH_OUT",
+          "importance": 0.0033330495557363266
+        },
+        {
+          "feature": "type_TRANSFER",
+          "importance": 0.0033330495557363266
+        }
+      ]
+    },
+    "random_forest": {
+      "selected_threshold": {
+        "best_threshold": 0.1,
+        "best_metric": "f1",
+        "best_value": 1.0,
+        "candidates": [
+          {
+            "threshold": 0.1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.15,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.2,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.25,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.3,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.35,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.4,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.45,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.5,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.55,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.6,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.65,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.7,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.75,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.8,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.85,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          },
+          {
+            "threshold": 0.9,
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0
+          }
+        ]
+      },
+      "validation": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "pr_auc": 1.0,
+        "support_positive": 2,
+        "support_negative": 10,
+        "confusion_matrix": [
+          [
+            10,
+            0
+          ],
+          [
+            0,
+            2
+          ]
+        ]
+      },
+      "test": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "pr_auc": 1.0,
+        "support_positive": 2,
+        "support_negative": 10,
+        "confusion_matrix": [
+          [
+            10,
+            0
+          ],
+          [
+            0,
+            2
+          ]
+        ]
+      },
+      "feature_importances": [
+        {
+          "feature": "amount",
+          "importance": 0.21308524838290413
+        },
+        {
+          "feature": "destination_balance_delta",
+          "importance": 0.19591419398481885
+        },
+        {
+          "feature": "newbalanceDest",
+          "importance": 0.19144585705446443
+        },
+        {
+          "feature": "origin_balance_delta",
+          "importance": 0.18716240653569982
+        },
+        {
+          "feature": "newbalanceOrig",
+          "importance": 0.15963959864787053
+        },
+        {
+          "feature": "is_full_balance_cash_out",
+          "importance": 0.019647850604733078
+        },
+        {
+          "feature": "is_full_balance_transfer",
+          "importance": 0.017841490526762618
+        },
+        {
+          "feature": "oldbalanceOrg",
+          "importance": 0.00928311306700314
+        },
+        {
+          "feature": "step",
+          "importance": 0.003613758169621818
+        },
+        {
+          "feature": "oldbalanceDest",
+          "importance": 0.0023664830261216157
+        },
+        {
+          "feature": "type_TRANSFER",
+          "importance": 3.6164989782505305e-17
+        },
+        {
+          "feature": "type_CASH_OUT",
+          "importance": 1.6455657698155825e-17
+        }
+      ]
+    }
+  }
+}
