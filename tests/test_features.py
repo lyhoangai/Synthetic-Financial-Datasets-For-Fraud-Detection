@@ -28,4 +28,5 @@ def test_build_feature_matrix_adds_rule_signal_columns():
     assert "destination_balance_delta" in features.columns
     assert "type_TRANSFER" in features.columns
     assert "type_CASH_OUT" in features.columns
+    assert "isFlaggedFraud" not in features.columns
     assert target.tolist() == [1, 0]

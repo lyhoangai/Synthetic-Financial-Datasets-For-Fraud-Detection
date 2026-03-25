@@ -139,6 +139,32 @@ The exported metrics compare:
 - logistic regression
 - random forest
 
+## Latest Local Reference Run
+
+Local reference run completed on `2026-03-25` using the public PaySim CSV with a stratified sample of `200,000` rows out of `6,362,620` total rows.
+
+Test-split summary:
+
+| Method | Precision | Recall | F1 | PR-AUC |
+| --- | ---: | ---: | ---: | ---: |
+| Rule baseline | 1.000 | 0.981 | 0.990 | 0.981 |
+| Logistic Regression | 1.000 | 1.000 | 1.000 | 1.000 |
+| Random Forest | 1.000 | 1.000 | 1.000 | 1.000 |
+
+Reference artifacts:
+
+- metrics JSON: `reports/metrics/paysim_200k/model_comparison.json`
+- confusion matrices:
+  - `reports/figures/rule_baseline_confusion_matrix.png`
+  - `reports/figures/logistic_regression_confusion_matrix.png`
+  - `reports/figures/random_forest_confusion_matrix.png`
+
+Interpretation:
+
+- the rule baseline remains very strong and misses only one positive case in the sampled test split
+- the supervised models reach perfect scores on this sampled run
+- those perfect scores should be interpreted cautiously because PaySim is a synthetic dataset with strong balance-driven structure
+
 ## Notebooks
 
 The notebooks are supporting material, not the source of truth:
@@ -169,8 +195,10 @@ Run all tests:
 
 - This is not a production fraud platform.
 - The current repo keeps the model family intentionally small.
-- Final benchmark values depend on the exact local dataset run.
-- Rule baselines can be strong on this dataset but may not generalize to real-world systems without deeper validation.
+- Final benchmark values depend on the exact local dataset run and sample size.
+- PaySim is synthetic, so very strong performance may reflect dataset structure rather than real-world deployment difficulty.
+- Rule baselines can be strong on this dataset but may not generalize to real financial systems without deeper validation.
+- Balance-related fields are highly informative in this dataset, so any production-grade extension should include leakage review and robustness checks.
 
 ## Why This Is Still Useful In A Portfolio
 

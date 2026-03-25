@@ -24,7 +24,6 @@ def build_feature_matrix(dataframe: pd.DataFrame) -> tuple[pd.DataFrame, pd.Seri
             "newbalanceOrig",
             "oldbalanceDest",
             "newbalanceDest",
-            "isFlaggedFraud",
             "is_full_balance_transfer",
             "is_full_balance_cash_out",
             "origin_balance_delta",
